@@ -185,6 +185,9 @@ tex/_minted-main/
 # Openoffice locks
 *.*#
 
+# Build dir
+build
+
 # Final PDF
 tfm.pdf
 *.pdf
