@@ -5,8 +5,8 @@ A System-V SHM interface for Python. Offers functionalities for shared memory se
 
 Process 1:
 ```
->>> import shm_manager as SHM
->>> segment1 = SHM.shm_manager(123456, 100)
+>>> from shm_manager import *
+>>> segment1 = shm_manager(123456, 100)
 >>> segment1.write("Hello world!")
 ```
 
@@ -36,8 +36,8 @@ key        shmid      owner      perms      bytes      nattch     status
 
 Process 2:
 ```
->>> import shm_manager as SHM
->>> segment1 = SHM.shm_manager(123456, 100, 0600)
+>>> from shm_manager import *
+>>> segment1 = shm_manager(123456, 100, 0600)
 >>> segment1.read()
 'Hello world!\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 ```
