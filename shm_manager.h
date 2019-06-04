@@ -12,7 +12,7 @@
 const int MAX_SHMGET_ATTEMPTS = 100;
 // this definition is meant to 1) avoid compiler warnings
 // 2) be conscious about the actual meaning of minus one in the size_t type
-const size_t MINUS_ONE = (size_t)-1;
+const size_t MINUS_ONE = (size_t) - 1;
 
 /*
   This struct contains all the necessary information in order to work
@@ -21,32 +21,32 @@ const size_t MINUS_ONE = (size_t)-1;
 typedef struct {
   PyObject_HEAD
   // it is preferrable to use unsigned instead of key_t for its
-  // generality
+  // genericity
   unsigned key;
   int id;
   unsigned long long byte_amount;
   int flags;
-  char* base_address;
+  char *base_address;
   unsigned long long offset;
   int last_z;
 } shm_manager;
 
 static char* member_names[] = {
-  (char*)"key",
-  (char*)"id",
-  (char*)"bytes",
-  (char*)"flags",
-  (char*)"base_address",
-  (char*)"offset"
+  (char*) "key",
+  (char*) "id",
+  (char*) "bytes",
+  (char*) "flags",
+  (char*) "base_address",
+  (char*) "offset"
 };
 
 static char* member_descriptions[] = {
-  (char*)"SHM key",
-  (char*)"SHM identifier",
-  (char*)"Byte length of the SHM",
-  (char*)"Flag-set for this manager",
-  (char*)"Base memory address of the mapped segment",
-  (char*)"Current offset (aka pointer)"
+  (char*) "SHM key",
+  (char*) "SHM identifier",
+  (char*) "Byte length of the SHM",
+  (char*) "Flag-set for this manager",
+  (char*) "Base memory address of the mapped segment",
+  (char*) "Current offset (aka pointer)"
 };
 
 PyMemberDef shm_manager_members[] = {
