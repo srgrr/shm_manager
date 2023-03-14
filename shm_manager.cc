@@ -42,9 +42,8 @@ PyObject* shm_manager_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
   while(
   attempt_count++ < MAX_SHMGET_ATTEMPTS &&
   (self -> id = shmget(self -> key, self -> byte_amount, self -> flags)) == -1) {
-    self -> key = (key_t) rand(); // TODO: Better RNG
+    self -> key = (key_t) rand();
   }
-  // TODO: THROW A PYEXCEPTION!!!
   // we tried to create or get an shm with no success? throw an error
   if(self -> id == -1) {
     std::cout << "shm_manager.__init__: ERROR,";
@@ -57,7 +56,6 @@ PyObject* shm_manager_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
     }
     return NULL;
   }
-  // TODO: THROW A PYEXCEPTION
   // attach the shared segment to our process
   // int attach_flags = self->flags&(IPC_CREAT | IPC_EXCL) ? 0 : SHM_RDONLY |
   // SHM_RND;
@@ -80,14 +78,11 @@ void _touch_next_page(shm_manager *self) {
 PyObject *shm_manager_write_pyobject(PyObject *self, PyObject *args) {
   shm_manager *_self = (shm_manager*)self;
   PyObject *content_object;
-  //std::cout << "pre argparse" << std::endl;
   if(!PyArg_ParseTuple(args, "O", &content_object)) {
     std::cout << "shm_manager.write: ERROR, wrong argspec!" << std::endl;
     return NULL;
   }
-  //std::cout << "pre memcpy" << std::endl;
   memcpy(_self -> base_address, content_object, _self -> byte_amount);
-  //for(int i=0; i<_self->byte_amount; ++i) std::cout << std::hex << int(_self->base_address[i]);
   Py_RETURN_NONE;
 }
 
@@ -95,7 +90,6 @@ PyObject *shm_manager_write(PyObject *self, PyObject *args) {
   shm_manager *_self = (shm_manager*) self;
   const char *to_write;
   int byte_amount;
-  //TODO: change couts for python exceptions
   if(!PyArg_ParseTuple(args, "s#", &to_write, &byte_amount)) {
     std::cout << "shm_manager.write: ERROR, wrong argspec!" << std::endl;
     return NULL;
@@ -123,22 +117,13 @@ PyObject *shm_manager_read(PyObject *self, PyObject *args) {
   return PyString_FromStringAndSize(
     _self -> base_address + _self -> offset - bytes_to_read,
     bytes_to_read);
-  //return Py_BuildValue("s#", _self->base_address + _self->offset - bytes_to_read,
-  //bytes_to_read);
 }
 
-//TODO: ENLAZAR CON CSTRING IO
+
 PyObject *shm_manager_read_pyobject(PyObject *self, PyObject *args) {
   shm_manager *_self = (shm_manager*) self;
   PyObject *ret = (PyObject*)_self->base_address;
-  // std::cout << "Address of PyString_Type is " << std::hex << &PyString_Type << std::endl;
-  // std::cout << "Address of ret->ob_type is " << &(ret->ob_type) << std::endl;
-  // std::cout << "Base address is " << std::hex << size_t(_self->base_address) << std::endl;
   ret -> ob_type = &PyString_Type;
-  // std::cout << "OB_TYPE changed succesfully" << std::endl;
-  // for(int i=0; i<_self->byte_amount; ++i) std::cout << std::hex << int(_self->base_address[i]);
-  // std::cout << std::endl;
-  //std::cout << _self->base_address << " " << ret << std::endl;
   Py_INCREF(ret);
   return (PyObject*) ret;
 }
@@ -153,8 +138,6 @@ PyObject *shm_manager_readline(PyObject* self, PyObject* args) {
   }
   auto ret = PyString_FromStringAndSize(_self->base_address + old_offset,
   _self -> offset - old_offset);
-  //auto ret = Py_BuildValue("s#", _self->base_address + old_offset,
-  //_self->offset - old_offset);
   return ret;
 }
 
